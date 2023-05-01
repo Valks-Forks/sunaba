@@ -2,112 +2,101 @@ namespace Sunaba.Core;
 
 public partial class UI : Control
 {
-	// Called when the node enters the scene tree for the first time.
+	private Node global;
+
+	private Window newRoomDialog;
+	private Window settingsDialog;
+	private Window mapDialog;
+	private Window connectDialog;
+	private Window acceptDialog1;
+	private Window characterWindow;
+	private FileDialog userFileDialog;
+	private LineEdit mapPath;
+	private OptionButton optionButton;
+	private Panel pauseMenu;
+	private Settings settings;
+
 	public override void _Ready()
 	{
+		global = GetNode("/root/Global");
+		newRoomDialog = GetNode<Window>("NewRoomDialog");
+		settingsDialog = GetNode<Window>("SettingsDialog");
+		mapDialog = GetNode<Window>("MapDialog");
+		connectDialog = GetNode<Window>("ConnectDialog");
+		acceptDialog1 = GetNode<AcceptDialog>("AcceptDialog1");
+		characterWindow = GetNode<Window>("CharacterWindow");
+		userFileDialog = GetNode<FileDialog>("UserFileDialog");
+		mapPath = newRoomDialog.GetNode<NewRoom>("NewRoom").GetNode<LineEdit>("MapPath");
+		pauseMenu = GetNode<Panel>("PauseMenu");
+		optionButton = mapDialog.GetNode<MapPicker>("StandardMapPicker").GetNode<OptionButton>("OptionButton");
+		settings = GetNode<Settings>("/root/Settings");
+
 		GetNode<Control>("MainMenu").Show();
-		GetNode<Panel>("PauseMenu").Hide();
+		pauseMenu.Hide();
 
 		GetNode<AcceptDialog>("AcceptDialog2").PopupCentered();
 	}
 
-	public void OnCreateButtonPressed() => 
-		GetNode<Window>("NewRoomDialog").PopupCentered();
-
-
-	public void OnSettingsButtonPressed() =>
-		GetNode<Window>("SettingsDialog").PopupCentered();
-
-	public void OnFileButtonPressed()
-	{
-		GetNode<FileDialog>("UserFileDialog").PopupCentered();
-		//GetNode<Node>("NativeDialogManager").Call("show_native_file_dialog");
-	}
+	public void OnCreateButtonPressed() => newRoomDialog.PopupCentered();
+	public void OnSettingsButtonPressed() => settingsDialog.PopupCentered();
+	public void OnFileButtonPressed() => userFileDialog.PopupCentered();
+	//GetNode<Node>("NativeDialogManager").Call("show_native_file_dialog");
 
 	public void OnFileMenuPressed(int id)
 	{
 		if (id == 0)
-		{
-			GetNode<Window>("MapDialog").PopupCentered();
-		}
+			mapDialog.PopupCentered();
 		else if (id == 1)
-		{
-			GetNode<FileDialog>("UserFileDialog").PopupCentered();
-		}
+			userFileDialog.PopupCentered();
 	}
 	public void OnFileSelected(String path)
 	{
-		Main parent = GetParent<Main>();
+		var parent = GetParent<Main>();
 		parent.path = path;
-		GetNode<Window>("NewRoomDialog").GetNode<NewRoom>("NewRoom").GetNode<LineEdit>("MapPath").Text = path;
+		mapPath.Text = path;
 	}
 
 	public void OnConnectButtonPressed()
 	{
-		Build build = GetNode<Build>("/root/Build");
-		Settings settings = GetNode<Settings>("/root/Settings");
-
+		//var build = GetNode<Build>("/root/Build");
 		if (settings.multiplayerEnabled == true)
-		{
-			GetNode<Window>("ConnectDialog").PopupCentered();
-		}
+			connectDialog.PopupCentered();
 		else
-		{
-			GetNode<AcceptDialog>("AcceptDialog1").PopupCentered();
-		}
+			acceptDialog1.PopupCentered();
 	}
 
-	public void OnConnectDialogCloseRequested() =>
-		GetNode<Window>("ConnectDialog").Hide();
-
-	public void OnMapDialogCloseRequested() =>
-		GetNode<Window>("MapDialog").Hide();
+	public void OnConnectDialogCloseRequested() => connectDialog.Hide();
+	public void OnMapDialogCloseRequested() => mapDialog.Hide();
 
 	public void Unpause()
 	{
-		var global = GetNode("/root/Global");
-		GetNode<Panel>("PauseMenu").Hide();
+		pauseMenu.Hide();
 		Input.MouseMode = Input.MouseModeEnum.Captured;
 		global.Set("gamePaused", false);
 	}
 
 	public void OnMapSelected()
 	{
-		String map = GetNode<Window>("MapDialog").GetNode<MapPicker>("StandardMapPicker").GetNode<OptionButton>("OptionButton").Text + ".map";
-		String mapPath = "res://maps/" + map;
+		var map = optionButton.Text + ".map";
+		var mapPath = "res://maps/" + map;
 
-		GetNode<Window>("MapDialog").Hide();
+		mapDialog.Hide();
 		OnFileSelected(mapPath);
 	}
 
-	public void OnNewRoomDialogCloseRequested() =>
-		GetNode<Window>("NewRoomDialog").Hide();
+	public void OnNewRoomDialogCloseRequested() => newRoomDialog.Hide();
+	public void OnCustomizeButtonPressed() => characterWindow.PopupCentered();
+	public void OnCharacterWindowCloseRequested() => characterWindow.Hide();
 
-	public void OnCustomizeButtonPressed() =>
-		GetNode<Window>("CharacterWindow").PopupCentered();
-
-	public void OnCharacterWindowCloseRequested() =>
-		GetNode<Window>("CharacterWindow").Hide();
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		var global = GetNode("/root/Global");
 		var gameStarted = global.Get("gameStarted");
 		var gamePaused = global.Get("gamePaused");
 
-
-
-		if (gameStarted.AsBool() == true)
-		{
-			if (gamePaused.AsBool() == true)
-			{
-				GetNode<Panel>("PauseMenu").Show();
-			}
+		if (gameStarted.AsBool())
+			if (gamePaused.AsBool())
+				pauseMenu.Show();
 			else
-			{
-				GetNode<Panel>("PauseMenu").Hide();
-			}
-		}
+				pauseMenu.Hide();
 	}
 }
