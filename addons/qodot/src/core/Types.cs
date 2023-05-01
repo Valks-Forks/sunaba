@@ -45,7 +45,7 @@ public struct Face
 
 public struct Brush
 {
-	public List<Face> faces = new List<Face>();
+	public List<Face> faces = new();
 	public Vector3 center;
 
 	public Brush()
@@ -80,18 +80,18 @@ public struct FaceVertex
 
 public class FaceGeometry
 {
-	public List<FaceVertex> vertices = new List<FaceVertex>();
-	public List<int> indices = new List<int>();
+	public List<FaceVertex> vertices = new();
+	public List<int> indices = new();
 }
 
 public class BrushGeometry
 {
-	public List<FaceGeometry> faces = new List<FaceGeometry>();
+	public List<FaceGeometry> faces = new();
 }
 
 public class EntityGeometry
 {
-	public List<BrushGeometry> brushes = new List<BrushGeometry>();
+	public List<BrushGeometry> brushes = new();
 }
 
 public struct TextureData

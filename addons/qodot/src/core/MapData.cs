@@ -5,10 +5,10 @@ using System.Runtime.InteropServices;
 
 public class MapData
 {
-	public List<Entity> entities = new List<Entity>();
-	public List<EntityGeometry> entityGeo = new List<EntityGeometry>();
-	public List<TextureData> textures = new List<TextureData>();
-	public List<WorldspawnLayer> worldspawnLayers = new List<WorldspawnLayer>();
+	public List<Entity> entities = new();
+	public List<EntityGeometry> entityGeo = new();
+	public List<TextureData> textures = new();
+	public List<WorldspawnLayer> worldspawnLayers = new();
 
 	public int FindWorldspawnLayer(int textureIdx)
 	{

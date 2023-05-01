@@ -86,7 +86,7 @@ public class MapParser
 
 	List<string> CustomSplit(string s)
 	{
-		List<string> parts = new List<string>();
+		var parts = new List<string>();
 		int start = 0;
 		int i = 0;
 

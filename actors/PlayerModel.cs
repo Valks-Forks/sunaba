@@ -106,7 +106,7 @@ public partial class PlayerModel : Node3D
 		String path = "res://Godime/textures/clothes/" + skinColor + "/" + name + ".png";
 		if (name == "skin")
 		{
-			Global global = GetNode<Global>("/root/Global");
+			//Global global = GetNode<Global>("/root/Global");
 			path = "res://Godime/textures/" + skinColor + ".png";
 		}
 		return path;

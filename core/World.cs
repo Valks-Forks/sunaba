@@ -186,10 +186,7 @@ public partial class World : Node3D
 		camera.Current = true;
 	}
 
-	public void SetSpectatorMode(bool enabled)
-	{
-		spectatorMode = enabled;
-	}
+	public void SetSpectatorMode(bool enabled) => spectatorMode = enabled;
 
 	public void SetVoxelGi(bool _bool)
 	{

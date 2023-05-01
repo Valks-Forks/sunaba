@@ -9,7 +9,7 @@ public partial class Build : Node
 	public String versionNumber = "0";
 	public String buildDate = "March 2, 2023";
 
-	public BuildFlags buildFlags = new BuildFlags();
+	public BuildFlags buildFlags = new();
 
 	public override void _Ready()
 	{

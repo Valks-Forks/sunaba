@@ -346,10 +346,7 @@ public partial class Player : CharacterBody3D
 		PackedScene toolToLoad = GD.Load<PackedScene>(t);
 		Tool tool2Spawn = toolToLoad.Instantiate<Tool>();
 		if (hand.GetChildCount() > 0)
-		{
-			if (hand.GetChild(0) != null)
-				hand.GetChild(0).QueueFree();
-		}
+			hand.GetChild(0)?.QueueFree();
 		toolLabel.Text = tool2Spawn.Name;
 		hand.AddChild(tool2Spawn);
 		ammo = tool2Spawn.maxAmmo;
@@ -740,22 +737,16 @@ public partial class Player : CharacterBody3D
 		Vector3 InputVector = Vector3.Zero;
 		InputVector.X = Input.GetActionStrength("move_right") - Input.GetActionStrength("move_left");
 		InputVector.Z = Input.GetActionStrength("move_backward") - Input.GetActionStrength("move_forward");
-		if (InputVector.Length() > 1)
-		{
+		return InputVector;
+
+		/*if (InputVector.Length() > 1)
 			return InputVector;
-		}
 		else
-		{
-			return InputVector;
-		}
+			return InputVector;*/
 	}
 
-	private Vector3 GetDirection(Vector3 InputVector)
-	{
-		Vector3 direction = Vector3.Zero;
-		direction = (InputVector.X * Transform.Basis.X) + (InputVector.Z * Transform.Basis.Z);
-		return direction;
-	}
+	private Vector3 GetDirection(Vector3 InputVector) =>
+		(InputVector.X * Transform.Basis.X) + (InputVector.Z * Transform.Basis.Z);
 
 	private void ApplyMovement(Vector3 direction, double delta)
 	{
@@ -1019,9 +1010,7 @@ public partial class Player : CharacterBody3D
 				PackedScene bDecal = GD.Load<PackedScene>(bDecPath);
 				Decal decal = bDecal.Instantiate<Decal>();
 				node3D.AddChild(decal);
-				Vector3 decTf = decal.GlobalPosition;
-				decTf = aimCast.GetCollisionPoint();
-				decal.GlobalPosition = decTf;
+				decal.GlobalPosition = aimCast.GetCollisionPoint();
 			}
 
 		}

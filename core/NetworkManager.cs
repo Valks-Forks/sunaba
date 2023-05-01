@@ -6,8 +6,8 @@ public partial class NetworkManager : Node
 {
 	private String matchId = null;
 
-	private ENetMultiplayerPeer enetPeer = new ENetMultiplayerPeer();
-	Upnp upnp = new Upnp();
+	private ENetMultiplayerPeer enetPeer = new();
+	Upnp upnp = new();
 
 	[Export]
 	public World world;

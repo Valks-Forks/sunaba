@@ -8,7 +8,7 @@ public partial class Global : Node
 	public bool gamePaused = false;
 	public bool isNetworkedGame = false;
 	public Vector3 spawnpoint;
-	public Array<Vector3> spawnpoints = new Array<Vector3>();
+	public Array<Vector3> spawnpoints = new();
 	public String gameMode = "";
 	public String playerModel = "custom";
 	public CharacterBody3D player;

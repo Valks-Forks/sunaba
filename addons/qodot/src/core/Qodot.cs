@@ -34,7 +34,7 @@ public partial class Qodot : RefCounted
 	public Array<string> GetTextureList()
 	{
 		int texCount = mapData.textures.Count;
-		Array<string> outTex = new Array<string>();
+		var outTex = new Array<string>();
 		outTex.Resize(texCount);
 		for (int i = 0; i < texCount; i++)
 		{
@@ -81,7 +81,7 @@ public partial class Qodot : RefCounted
 
 	public Array<Dictionary> GetWorldspawnLayerDicts()
 	{
-		Array<Dictionary> worldspawnLayerDicts = new Array<Dictionary>();
+		var worldspawnLayerDicts = new Array<Dictionary>();
 		if (mapData.entities.Count <= 0)
 			return worldspawnLayerDicts;
 
@@ -89,13 +89,13 @@ public partial class Qodot : RefCounted
 
 		for (int l = 0; l < mapData.worldspawnLayers.Count; l++)
 		{
-			Dictionary layerDict = new Dictionary();
+			var layerDict = new Dictionary();
 			WorldspawnLayer layer = mapData.worldspawnLayers[l];
 			TextureData texData = mapData.textures[layer.textureIdx];
 
 			layerDict["texture"] = texData.name;
 
-			Array<int> brushIndices = new Array<int>();
+			var brushIndices = new Array<int>();
 			Span<Brush> brushSpan = CollectionsMarshal.AsSpan(worldspawnEnt.brushes);
 			for (int b = 0; b < brushSpan.Length; b++)
 			{
@@ -123,15 +123,15 @@ public partial class Qodot : RefCounted
 
 	public Array<Dictionary> GetEntityDicts()
 	{
-		Array<Dictionary> entDicts = new Array<Dictionary>();
+		var entDicts = new Array<Dictionary>();
 
 		Span<Entity> entitySpan = mapData.GetEntitiesSpan();
 		for (int e = 0; e < entitySpan.Length; e++)
 		{
-			Dictionary dict = new Dictionary();
+			var dict = new Dictionary();
 			dict["brush_count"] = entitySpan[e].brushes.Count;
 
-			Array<int> brushIndices = new Array<int>();
+			var brushIndices = new Array<int>();
 			Span<Brush> brushSpan = mapData.GetBrushesSpan(e);
 			for (int b = 0; b < brushSpan.Length; b++)
 			{
@@ -220,7 +220,7 @@ public partial class Qodot : RefCounted
 	public Array FetchSurfaces(float inverseScaleFactor)
 	{
 		Span<FaceGeometry> surfsSpan = CollectionsMarshal.AsSpan(surfaceGatherer.outSurfaces);
-		Array surfsArray = new Array();
+		var surfsArray = new Array();
 
 		for (int s = 0; s < surfsSpan.Length; s++)
 		{
@@ -256,7 +256,7 @@ public partial class Qodot : RefCounted
 				indices[i] = surfsSpan[s].indices[i];
 			}
 
-			Array brushArray = new Array();
+			var brushArray = new Array();
 			brushArray.Resize((int)Mesh.ArrayType.Max);
 			brushArray[(int)Mesh.ArrayType.Vertex] = vertices;
 			brushArray[(int)Mesh.ArrayType.Normal] = normals;

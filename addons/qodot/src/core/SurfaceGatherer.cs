@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 public class SurfaceGatherer
 {
-	public List<FaceGeometry> outSurfaces = new List<FaceGeometry>();
+	public List<FaceGeometry> outSurfaces = new();
 	public MapData mapData;
 
 	public SurfaceSplitType splitType = SurfaceSplitType.NONE;
@@ -73,8 +73,8 @@ public class SurfaceGatherer
 					Span<FaceVertex> vertexSpan = CollectionsMarshal.AsSpan(faceGeo.vertices);
 					for (int v = 0; v < vertexSpan.Length; v++)
 					{
-						if (entitySpan[e].spawnType == EntitySpawnType.ENTITY ||
-							entitySpan[e].spawnType == EntitySpawnType.GROUP)
+						if (entitySpan[e].spawnType is EntitySpawnType.ENTITY or
+							EntitySpawnType.GROUP)
 						{
 							vertexSpan[v].vertex -= entitySpan[e].center;
 						}

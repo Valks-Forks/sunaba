@@ -8,9 +8,9 @@ public class GeoGenerator
 	// Min distance between two verts in a brush before they're merged. Higher values fix angled brushes near extents.
 	private const float CMP_EPSILON = 0.008f;
 
-	private readonly Vector3 UP_VECTOR      = new Vector3(0.0f, 0.0f, 1.0f);
-	private readonly Vector3 RIGHT_VECTOR   = new Vector3(0.0f, 1.0f, 0.0f);
-	private readonly Vector3 FORWARD_VECTOR = new Vector3(1.0f, 0.0f, 0.0f);
+	private readonly Vector3 UP_VECTOR      = new(0.0f, 0.0f, 1.0f);
+	private readonly Vector3 RIGHT_VECTOR   = new(0.0f, 1.0f, 0.0f);
+	private readonly Vector3 FORWARD_VECTOR = new(1.0f, 0.0f, 0.0f);
 
 	public MapData mapData;
 
@@ -210,7 +210,7 @@ public class GeoGenerator
 					if (vertex == null || !VertexInHull(brush.faces, vertex.Value))
 						continue;
 
-					Vector3 normal = Vector3.Zero;
+					Vector3 normal;
 					if (phong)
 					{
 						float threshold = Mathf.Cos((phongAngle + 0.01f) * 0.0174533f);
@@ -225,8 +225,8 @@ public class GeoGenerator
 						normal = face.planeNormal;
 					}
 
-					Vector2 uv = Vector2.Zero;
-					Vector4 tangent = Vector4.Zero;
+					Vector2 uv;
+					Vector4 tangent;
 
 					if (face.isValveUV)
 					{
@@ -251,11 +251,13 @@ public class GeoGenerator
 
 					if (duplicateIdx < 0)
 					{
-						FaceVertex newVert = new FaceVertex();
-						newVert.vertex = vertex.Value;
-						newVert.normal = normal;
-						newVert.tangent = tangent;
-						newVert.uv = uv;
+						var newVert = new FaceVertex
+						{
+							vertex = vertex.Value,
+							normal = normal,
+							tangent = tangent,
+							uv = uv
+						};
 						faceGeo.vertices.Add(newVert);
 					}
 					else if (phong)
