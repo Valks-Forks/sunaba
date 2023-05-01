@@ -11,16 +11,12 @@ public partial class UI : Control
 		GetNode<AcceptDialog>("AcceptDialog2").PopupCentered();
 	}
 
-	public void OnCreateButtonPressed()
-	{
+	public void OnCreateButtonPressed() => 
 		GetNode<Window>("NewRoomDialog").PopupCentered();
-	}
 
 
-	public void OnSettingsButtonPressed()
-	{
+	public void OnSettingsButtonPressed() =>
 		GetNode<Window>("SettingsDialog").PopupCentered();
-	}
 
 	public void OnFileButtonPressed()
 	{
@@ -61,15 +57,11 @@ public partial class UI : Control
 		}
 	}
 
-	public void OnConnectDialogCloseRequested()
-	{
+	public void OnConnectDialogCloseRequested() =>
 		GetNode<Window>("ConnectDialog").Hide();
-	}
 
-	public void OnMapDialogCloseRequested()
-	{
+	public void OnMapDialogCloseRequested() =>
 		GetNode<Window>("MapDialog").Hide();
-	}
 
 	public void Unpause()
 	{
@@ -88,19 +80,14 @@ public partial class UI : Control
 		OnFileSelected(mapPath);
 	}
 
-	public void OnNewRoomDialogCloseRequested()
-	{
+	public void OnNewRoomDialogCloseRequested() =>
 		GetNode<Window>("NewRoomDialog").Hide();
-	}
-	public void OnCustomizeButtonPressed()
-	{
-		GetNode<Window>("CharacterWindow").PopupCentered();
-	}
 
-	public void OnCharacterWindowCloseRequested()
-	{
+	public void OnCustomizeButtonPressed() =>
+		GetNode<Window>("CharacterWindow").PopupCentered();
+
+	public void OnCharacterWindowCloseRequested() =>
 		GetNode<Window>("CharacterWindow").Hide();
-	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)

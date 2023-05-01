@@ -26,10 +26,7 @@ public partial class Qodot : RefCounted
 		surfaceGatherer = new SurfaceGatherer(mapData);
 	}
 
-	public void LoadMap(string filename)
-	{
-		mapParser.Load(filename);
-	}
+	public void LoadMap(string filename) => mapParser.Load(filename);
 
 	public Array<string> GetTextureList()
 	{
@@ -159,15 +156,13 @@ public partial class Qodot : RefCounted
 		return entDicts;
 	}
 
-	public void GatherTextureSurfaces(string texName, string brushFilterTex, string faceFilterTex)
-	{
-		GatherTextureSurfacesInternal(texName, brushFilterTex, faceFilterTex, true);
-	}
+	public void GatherTextureSurfaces(string texName, string brushFilterTex, 
+		string faceFilterTex) =>
+			GatherTextureSurfacesInternal(texName, brushFilterTex, faceFilterTex, true);
 
-	public void GatherWorldspawnLayerSurfaces(string texName, string brushFilterTex, string faceFilterTex)
-	{
-		GatherTextureSurfacesInternal(texName, brushFilterTex, faceFilterTex, false);
-	}
+	public void GatherWorldspawnLayerSurfaces(string texName, string brushFilterTex, 
+		string faceFilterTex) =>
+			GatherTextureSurfacesInternal(texName, brushFilterTex, faceFilterTex, false);
 
 	private void GatherTextureSurfacesInternal(string texName, string brushFilterTex, string faceFilterTex,
 		bool filterLayers)
@@ -182,20 +177,14 @@ public partial class Qodot : RefCounted
 		surfaceGatherer.Run();
 	}
 
-	public void GatherEntityConvexCollisionSurfaces(int entityIdx)
-	{
+	public void GatherEntityConvexCollisionSurfaces(int entityIdx) =>
 		GatherConvexCollisionSurfaces(entityIdx, true);
-	}
 
-	public void GatherEntityConcaveCollisionSurfaces(int entityIdx)
-	{
+	public void GatherEntityConcaveCollisionSurfaces(int entityIdx) =>
 		GatherConcaveCollisionSurfaces(entityIdx, true);
-	}
 
-	public void GatherWorldspawnLayerCollisionSurfaces(int entityIdx)
-	{
+	public void GatherWorldspawnLayerCollisionSurfaces(int entityIdx) =>
 		GatherConvexCollisionSurfaces(entityIdx, false);
-	}
 
 	private void GatherConvexCollisionSurfaces(int entityIdx, bool filterLayers)
 	{

@@ -120,10 +120,8 @@ public partial class PlayerModel : Node3D
 
 	}
 
-	public void ChangeFaceTexture(String texture)
-	{
+	public void ChangeFaceTexture(String texture) =>
 		ChangeTexture(faceMaterial, GetFaceTexture(texture));
-	}
 
 	public void ChangeHeadwear(String headwearName)
 	{

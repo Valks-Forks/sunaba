@@ -104,10 +104,7 @@ public partial class Main : Node
 		}
 	}
 
-	public void Quit()
-	{
-		GetTree().Quit();
-	}
+	public void Quit() => GetTree().Quit();
 
 	public override void _Input(InputEvent @event)
 	{

@@ -1024,14 +1024,8 @@ public partial class Player : CharacterBody3D
 		isReloading = false;
 	}
 
-	public void OnFireTimerTimeout()
-	{
-		hasFired = false;
-	}
-	public void OnWalkTimerTimeout()
-	{
-		canPlayWalkSound = true;
-	}
+	public void OnFireTimerTimeout() => hasFired = false;
+	public void OnWalkTimerTimeout() => canPlayWalkSound = true;
 
 	public void OnToolTreeItemActivated()
 	{

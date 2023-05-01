@@ -44,10 +44,7 @@ public partial class Global : Node
 		return sp;
 	}
 
-	public void AddSpawnpoint(Vector3 sp)
-	{
-		spawnpoints.Add(sp);
-	}
+	public void AddSpawnpoint(Vector3 sp) => spawnpoints.Add(sp);
 }
 
 

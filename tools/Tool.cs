@@ -27,13 +27,6 @@ public partial class Tool : Node3D
 	[Export]
 	public bool showCounter = true;
 
-	public Resource getToolObject()
-	{
-		return GD.Load<Resource>(toolObjectPath);
-	}
-
-	public Resource getDecal()
-	{
-		return GD.Load<Resource>(decalPath);
-	}
+	public Resource getToolObject() => GD.Load<Resource>(toolObjectPath);
+	public Resource getDecal() => GD.Load<Resource>(decalPath);
 }

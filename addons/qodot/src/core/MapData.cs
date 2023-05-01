@@ -63,40 +63,24 @@ public class MapData
 		}
 	}
 
-	public Span<Entity> GetEntitiesSpan()
-	{
-		return CollectionsMarshal.AsSpan(entities);
-	}
+	public Span<Entity> GetEntitiesSpan() => CollectionsMarshal.AsSpan(entities);
 
-	public Span<Brush> GetBrushesSpan(int entityIdx)
-	{
-		return CollectionsMarshal.AsSpan(GetEntitiesSpan()[entityIdx].brushes);
-	}
+	public Span<Brush> GetBrushesSpan(int entityIdx) =>
+		CollectionsMarshal.AsSpan(GetEntitiesSpan()[entityIdx].brushes);
 
-	public Span<Face> GetFacesSpan(int entityIdx, int brushIdx)
-	{
-		return CollectionsMarshal.AsSpan(GetBrushesSpan(entityIdx)[brushIdx].faces);
-	}
+	public Span<Face> GetFacesSpan(int entityIdx, int brushIdx) =>
+		CollectionsMarshal.AsSpan(GetBrushesSpan(entityIdx)[brushIdx].faces);
 
-	public Span<EntityGeometry> GetEntityGeoSpan()
-	{
-		return CollectionsMarshal.AsSpan(entityGeo);
-	}
+	public Span<EntityGeometry> GetEntityGeoSpan() =>
+		CollectionsMarshal.AsSpan(entityGeo);
 
-	public Span<BrushGeometry> GetBrushGeoSpan(int entityIdx)
-	{
-		return CollectionsMarshal.AsSpan(GetEntityGeoSpan()[entityIdx].brushes);
-	}
+	public Span<BrushGeometry> GetBrushGeoSpan(int entityIdx) =>
+		CollectionsMarshal.AsSpan(GetEntityGeoSpan()[entityIdx].brushes);
 
-	public Span<FaceGeometry> GetFaceGeoSpan(int entityIdx, int brushIdx)
-	{
-		return CollectionsMarshal.AsSpan(GetBrushGeoSpan(entityIdx)[brushIdx].faces);
-	}
+	public Span<FaceGeometry> GetFaceGeoSpan(int entityIdx, int brushIdx) =>
+		CollectionsMarshal.AsSpan(GetBrushGeoSpan(entityIdx)[brushIdx].faces);
 
-	public Span<TextureData> GetTexturesSpan()
-	{
-		return CollectionsMarshal.AsSpan(textures);
-	}
+	public Span<TextureData> GetTexturesSpan() => CollectionsMarshal.AsSpan(textures);
 
 	public void Reset()
 	{

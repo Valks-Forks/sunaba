@@ -94,25 +94,17 @@ public class SurfaceGatherer
 		}
 	}
 
-	public void SetTextureFilter(string textureName)
-	{
+	public void SetTextureFilter(string textureName) =>
 		textureFilterIdx = mapData.FindTexture(textureName);
-	}
 
-	public void SetBrushFilterTexture(string textureName)
-	{
+	public void SetBrushFilterTexture(string textureName) =>
 		brushFilterTextureIdx = mapData.FindTexture(textureName);
-	}
 
-	public void SetFaceFilterTexture(string textureName)
-	{
+	public void SetFaceFilterTexture(string textureName) =>
 		faceFilterTextureIdx = mapData.FindTexture(textureName);
-	}
 
-	private bool FilterEntity(int entityIdx)
-	{
-		return entityFilterIdx != -1 && entityIdx != entityFilterIdx;
-	}
+	private bool FilterEntity(int entityIdx) =>
+		entityFilterIdx != -1 && entityIdx != entityFilterIdx;
 
 	private bool FilterBrush(int entityIdx, int brushIdx)
 	{

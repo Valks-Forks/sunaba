@@ -100,8 +100,5 @@ public partial class SettingsDialog : Window
 	}
 
 
-	public void OnCloseRequested()
-	{
-		Hide();
-	}
+	public void OnCloseRequested() => Hide();
 }

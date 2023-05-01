@@ -109,8 +109,5 @@ public partial class NPC : CharacterBody3D
 		GlobalRotation = rotation;
 	}
 
-	void Print(String _string)
-	{
-		console.Print(_string);
-	}
+	void Print(String _string) => console.Print(_string);
 }

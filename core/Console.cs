@@ -14,8 +14,6 @@ public partial class Console : Node
 		GD.Print(msg);
 	}
 
-	public void Register(String name, Node node)
-	{
+	public void Register(String name, Node node) =>
 		console.Call("register_env", name, node);
-	}
 }
