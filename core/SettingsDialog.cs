@@ -71,6 +71,12 @@ public partial class SettingsDialog : Window
 		if (ui != null)
 		{
 			ui.Theme = theme;
+      
+      var themeManager = GetNode<ThemeManager>("/root/ThemeManager");
+      themeManager.themeName = themeDropdown.GetItemText(index);
+      String themePath = "res://themes/" + themeDropdown.GetItemText(index) + ".tres";
+      Godot.Theme theme = GD.Load<Theme>(themePath);
+      ChangeTheme(theme);
 		}
 		themeManager.theme = theme;
 	}

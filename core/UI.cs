@@ -92,6 +92,8 @@ public partial class UI : Control
 	{
 		var gameStarted = global.Get("gameStarted");
 		var gamePaused = global.Get("gamePaused");
+    ThemeManager themeManager = GetNode<ThemeManager>("/root/ThemeManager");
+    Theme = themeManager.theme;
 
 		if (gameStarted.AsBool())
 			if (gamePaused.AsBool())

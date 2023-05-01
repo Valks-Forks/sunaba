@@ -484,13 +484,37 @@ public partial class Player : CharacterBody3D
 			}
 			else if (speed == sprintSpeed && IsOnFloor())
 			{
-				animationPlayer.Play("Locomotion-Library/run");
-				Vector3 modelPosition = model.Position;
-				modelPosition.Y = 0;
-				model.Position = modelPosition;
-				akari.Position = Vector3.Zero;
-				akari.Rotation = Vector3.Zero;
-				if (canPlayWalkSound)
+				speed = defaultSpeed;
+				walkTimer.WaitTime = defaultWalkSoundTime;
+				Vector3 InputVector = GetInputVector();
+				Vector3 Direction = GetDirection(InputVector);
+				Jump();
+				vel = Velocity;
+
+				healthBar.Value = health;
+
+				ThemeManager themeManager = GetNode<ThemeManager>("/root/ThemeManager");
+				playerPanel.Theme = themeManager.theme;
+				toolPanel.Theme = themeManager.theme;
+				crosshair.Theme = themeManager.theme;
+				sbMenuWindow.Theme = themeManager.theme;
+				toolAmmoCounter.Text = ammo.ToString() + " / " + maxAmmo.ToString();
+				toolAmmoBar.Value = ammo;
+				toolAmmoBar.MaxValue = maxAmmo;
+
+				String hbThemePath = "res://themes/HealthBar/" + themeManager.themeName + ".tres";
+				if (ResourceLoader.Exists(hbThemePath) == true)
+				{
+					GD.Print("Theme Exits");
+					StyleBox hbTheme = GD.Load<StyleBox>(hbThemePath);
+					healthBar.RemoveThemeStyleboxOverride("fill");
+					healthBar.AddThemeStyleboxOverride("fill", hbTheme);
+				}
+
+				sprintingIcon.Hide();
+                
+				
+				if (Input.IsActionPressed("sprint"))
 				{
 					walkSound.Stream = footSounds.PickRandom();
 					walkSound.Play();
