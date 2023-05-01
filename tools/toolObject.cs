@@ -1,6 +1,3 @@
-using Godot;
-using System;
-
 namespace Sunaba.Tools;
 
 public partial class ToolObject : RigidBody3D

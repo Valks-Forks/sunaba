@@ -1,9 +1,7 @@
-using System.Collections.Generic;
-using Godot;
-using Godot.Collections;
-using System;
-
 namespace Sunaba.Entities;
+
+using System.Collections.Generic;
+using Godot.Collections;
 
 public partial class MusicPlayer : Node3D
 {

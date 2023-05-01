@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using Godot;
+﻿namespace Qodot;
 
-namespace Qodot;
+using System.Collections.Generic;
 
 public enum EntitySpawnType
 {

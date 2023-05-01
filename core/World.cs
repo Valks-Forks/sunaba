@@ -18,9 +18,6 @@ The AddBots and AddBot methods are not fully implemented and are left as exercis
 
  */
 
-using Godot;
-using System;
-
 namespace Sunaba.Core;
 
 public partial class World : Node3D

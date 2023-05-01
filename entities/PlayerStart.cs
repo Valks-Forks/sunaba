@@ -1,8 +1,6 @@
-using Godot;
-using System;
-using Sunaba.Core;
-
 namespace Sunaba.Entities;
+
+using Sunaba.Core;
 
 public partial class PlayerStart : Node3D
 {

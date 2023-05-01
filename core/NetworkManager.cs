@@ -1,8 +1,6 @@
-using Godot;
-using MoonSharp.Interpreter;
-using System;
-
 namespace Sunaba.Core;
+
+using MoonSharp.Interpreter;
 
 public partial class NetworkManager : Node
 {

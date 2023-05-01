@@ -1,9 +1,7 @@
-﻿using System;
+﻿namespace Qodot;
+
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Godot;
-
-namespace Qodot;
 
 public class GeoGenerator
 {

@@ -1,10 +1,8 @@
-using Godot;
+namespace Sunaba.Actors;
+
 using Godot.Collections;
-using System;
 using Sunaba.Core;
 using Sunaba.Tools;
-
-namespace Sunaba.Actors;
 
 public partial class Player : CharacterBody3D
 {

@@ -1,9 +1,6 @@
-using Godot;
-using Godot.Collections;
-using System;
-using System.Linq;
-
 namespace Sunaba.Core;
+
+using Godot.Collections;
 
 public partial class Global : Node
 {

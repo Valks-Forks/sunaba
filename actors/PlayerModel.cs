@@ -1,8 +1,6 @@
-using Godot;
-using System;
-using Sunaba.Core;
-
 namespace Sunaba.Actors;
+
+using Sunaba.Core;
 
 public partial class PlayerModel : Node3D
 {

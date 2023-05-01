@@ -1,11 +1,9 @@
-using Godot;
+namespace Sunaba.Entities;
+
 using Godot.Collections;
-using System;
 using System.Collections.Generic;
 using MoonSharp.Interpreter;
 using Script = MoonSharp.Interpreter.Script;
-
-namespace Sunaba.Entities;
 
 public partial class NPC : CharacterBody3D
 {

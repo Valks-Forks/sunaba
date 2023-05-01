@@ -1,9 +1,7 @@
-using Godot;
-using System;
+namespace Sunaba.Godime;
+
 using Sunaba.Actors;
 using Sunaba.Core;
-
-namespace Sunaba.Godime;
 
 public partial class CharacterCreator : Control
 {

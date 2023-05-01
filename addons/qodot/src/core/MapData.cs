@@ -1,8 +1,7 @@
-﻿using System;
+﻿namespace Qodot;
+
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-
-namespace Qodot;
 
 public class MapData
 {

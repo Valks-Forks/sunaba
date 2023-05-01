@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using Godot;
+﻿namespace Qodot;
 
-namespace Qodot;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 public class SurfaceGatherer
 {

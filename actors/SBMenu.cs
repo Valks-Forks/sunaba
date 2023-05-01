@@ -1,6 +1,3 @@
-using Godot;
-using System;
-
 namespace Sunaba.Actors;
 
 public partial class SBMenu : Panel

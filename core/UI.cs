@@ -1,6 +1,3 @@
-using Godot;
-using System;
-
 namespace Sunaba.Core;
 
 public partial class UI : Control

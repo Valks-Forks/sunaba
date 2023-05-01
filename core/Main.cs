@@ -1,7 +1,3 @@
-using Godot;
-using MoonSharp.Interpreter;
-using System;
-
 /*
  *
  * CONGRATULATIONS
@@ -12,7 +8,13 @@ using System;
  * 
  */
 
+global using Godot;
+global using System;
+global using System.Linq;
+
 namespace Sunaba.Core;
+
+using MoonSharp.Interpreter;
 
 public partial class Main : Node
 {
