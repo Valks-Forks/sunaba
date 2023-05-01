@@ -21,78 +21,150 @@ The AddBots and AddBot methods are not fully implemented and are left as exercis
 using Godot;
 using System;
 
-namespace Sunaba.Core
+namespace Sunaba.Core;
+
+public partial class World : Node3D
 {
-	public partial class World : Node3D
+	private Node3D mapManager;
+	private NavigationRegion3D navRegion;
+	private Main main;
+
+	private static bool spectatorMode = false;
+
+	// Called when the node enters the scene tree for the first time.
+	public override void _Ready()
 	{
-		private Node3D mapManager;
-		private NavigationRegion3D navRegion;
-		private Main main;
+		navRegion = GetNode<NavigationRegion3D>("NavigationRegion3D");
+		mapManager = navRegion.GetNode<Node3D>("MapManager");
 
-		private static bool spectatorMode = false;
-		
-		// Called when the node enters the scene tree for the first time.
-		public override void _Ready()
+		main = GetParent<Main>();
+
+		Console console = GetNode<Console>("/root/PConsole");
+		console.Register(Name, this);
+
+	}
+
+	public void LoadMapPath(string path)
+	{
+		PackedScene mapHolderPath = GD.Load<PackedScene>("res://core/MapHolder.tscn");
+		MapHolder mapHolder = mapHolderPath.Instantiate<MapHolder>();
+		AddChild(mapHolder);
+		mapHolder.map = path;
+		GD.Print(path);
+
+		//PackedScene player = GD.Load<PackedScene>("res://actors/player.tscn");
+		//CharacterBody3D playerInstance = player.Instantiate<CharacterBody3D>();
+		//playerInstance.Name = GD.VarToStr(id);
+		//AddChild(playerInstance);
+	}
+
+	public void LoadMap(string path)
+	{
+		if (path != null)
 		{
-			navRegion = GetNode<NavigationRegion3D>("NavigationRegion3D");
-			mapManager = navRegion.GetNode<Node3D>("MapManager");
+			main.LogToChat("Loading Map");
+			mapManager.Set("map_file", path);
+			mapManager.Call("verify_and_build");
+		}
+	}
 
-			main = GetParent<Main>();
-
-            Console console = GetNode<Console>("/root/PConsole");
-            console.Register(Name, this);
-
-        }
-
-		public void LoadMapPath(string path)
+	[Rpc(MultiplayerApi.RpcMode.AnyPeer)]
+	private void SetMap(String path)
+	{
+		if (Multiplayer.GetUniqueId() == 1)
 		{
-			PackedScene mapHolderPath = GD.Load<PackedScene>("res://core/MapHolder.tscn");
-			MapHolder mapHolder = mapHolderPath.Instantiate<MapHolder>();
-			AddChild(mapHolder);
-			mapHolder.map = path;
-			GD.Print(path);
+			Rpc("SetMap", path);
+		}
+	}
 
-            //PackedScene player = GD.Load<PackedScene>("res://actors/player.tscn");
-            //CharacterBody3D playerInstance = player.Instantiate<CharacterBody3D>();
-            //playerInstance.Name = GD.VarToStr(id);
-            //AddChild(playerInstance);
-        }
+	public void PrepForRespawn()
+	{
+		GetNode<Timer>("RespawnTimer").Start();
+		main.LogToChat("Respawning in 5 seconds");
+	}
 
-		public void LoadMap(string path)
+	[Rpc(MultiplayerApi.RpcMode.AnyPeer)]
+	public void LoadMapRemote()
+	{
+		LoadMap(GetNode<MapHolder>("MapHolder").map);
+	}
+
+	public void OnRespawnTimerTimeout()
+	{
+		main.LogToChat("Respawning Player");
+		int id = Multiplayer.GetUniqueId();
+		if (id != 1)
 		{
-			if (path != null)
-			{
-				main.LogToChat("Loading Map");
-				mapManager.Set("map_file", path);
-				mapManager.Call("verify_and_build");
-			}
+			RpcId(1, "InstancePlayer", id);
+		}
+		else
+		{
+			InstancePlayer(id);
+		}
+	}
+
+	[Rpc(MultiplayerApi.RpcMode.AnyPeer)]
+	private void InstancePlayer(int id)
+	{
+		//GetNode<Camera3D>("Camera3D").Current = false;
+		PackedScene player = GD.Load<PackedScene>("res://actors/player.tscn");
+		CharacterBody3D playerInstance = player.Instantiate<CharacterBody3D>();
+		playerInstance.Name = GD.VarToStr(id);
+		AddChild(playerInstance);
+		Global global = GetNode<Global>("/root/Global/");
+		if (id == Multiplayer.GetUniqueId())
+		{
+			global.player = playerInstance;
 		}
 
-		[Rpc(MultiplayerApi.RpcMode.AnyPeer)]
-		private void SetMap(String path)
+		String gameMode = global.Get("game_mode").As<string>();
+
+		Vector3 spawnpoint = global.GetSpawnpoints();
+		playerInstance.GlobalPosition = spawnpoint;
+	}
+
+	public void PlayerJoined(int id)
+	{
+		RpcId(id, "LoadMapRemote");
+	}
+
+	private void AddBots()
+	{
+		var global = GetNode("/root/Global");
+		bool botsEnabled = global.Get("bots_enabled").As<bool>();
+		int botAmount = global.Get("bot_amount").As<int>();
+		String gameMode = global.Get("game_mode").As<string>();
+	}
+
+	private void AddBot()
+	{
+		PackedScene bot = GD.Load<PackedScene>("res://actors/dm_bot.tscn");
+		CharacterBody3D botInstance = bot.Instantiate<CharacterBody3D>();
+		AddChild(botInstance);
+		var global = GetNode("/root/Global");
+		String gameMode = global.Get("game_mode").As<string>();
+		if (gameMode == "Deathmatch")
 		{
-            if (Multiplayer.GetUniqueId() == 1)
-			{
-				Rpc("SetMap", path);
-			}
+			var spVar = global.Call("get_spawnpoint");
+
+			var spawnpoint = spVar.As<Vector3>();
+			botInstance.GlobalPosition = spawnpoint;
 		}
-
-		public void PrepForRespawn()
+		int botAmount = global.Get("bot_amount").As<int>();
+		if (botAmount != 0)
 		{
-			GetNode<Timer>("RespawnTimer").Start();
-            main.LogToChat("Respawning in 5 seconds");
-        }
-
-        [Rpc(MultiplayerApi.RpcMode.AnyPeer)]
-        public void LoadMapRemote()
-		{
-			LoadMap(GetNode<MapHolder>("MapHolder").map);
+			AddBot();
 		}
+	}
 
-        public void OnRespawnTimerTimeout()
+	public void OnMapManagerBuildComplete()
+	{
+		mapManager.Call("unwrap_uv2");
+		navRegion.BakeNavigationMesh();
+
+		if (!spectatorMode)
 		{
-            main.LogToChat("Respawning Player");
-			int id = Multiplayer.GetUniqueId(); 
+			int id = Multiplayer.GetUniqueId();
 			if (id != 1)
 			{
 				RpcId(1, "InstancePlayer", id);
@@ -102,109 +174,36 @@ namespace Sunaba.Core
 				InstancePlayer(id);
 			}
 		}
-
-		[Rpc(MultiplayerApi.RpcMode.AnyPeer)]
-		private void InstancePlayer(int id)
+		else
 		{
-			//GetNode<Camera3D>("Camera3D").Current = false;
-			PackedScene player = GD.Load<PackedScene>("res://actors/player.tscn");
-			CharacterBody3D playerInstance = player.Instantiate<CharacterBody3D>();
-			playerInstance.Name = GD.VarToStr(id);
-			AddChild(playerInstance);
-            Global global = GetNode<Global>("/root/Global/");
-            if (id ==  Multiplayer.GetUniqueId())
-			{
-				global.player = playerInstance;
-			}
-
-            String gameMode = global.Get("game_mode").As<string>();
-
-			Vector3 spawnpoint = global.GetSpawnpoints();
-            playerInstance.GlobalPosition = spawnpoint;
-        }
-
-		public void PlayerJoined(int id)
-		{
-			RpcId(id, "LoadMapRemote");
+			SpawnCamera();
 		}
+	}
 
-		private void AddBots()
+	public void SpawnCamera()
+	{
+		//GetNode<Camera3D>("Camera3D").Current = false;
+		PackedScene cameraScene = GD.Load<PackedScene>("res://core/Camera.tscn");
+		Camera3D camera = cameraScene.Instantiate<Camera3D>();
+		AddChild(camera);
+		camera.Current = true;
+	}
+
+	public void SetSpectatorMode(bool enabled)
+	{
+		spectatorMode = enabled;
+	}
+
+	public void SetVoxelGi(bool _bool)
+	{
+		VoxelGI voxelGi = GetNode<VoxelGI>("VoxelGI");
+		if (_bool == true)
 		{
-            var global = GetNode("/root/Global");
-			bool botsEnabled = global.Get("bots_enabled").As<bool>();
-            int botAmount = global.Get("bot_amount").As<int>();
-            String gameMode = global.Get("game_mode").As<string>();
-        }
-
-		private void AddBot()
-        {
-			PackedScene bot = GD.Load<PackedScene>("res://actors/dm_bot.tscn");
-			CharacterBody3D botInstance = bot.Instantiate<CharacterBody3D>();
-			AddChild(botInstance);
-            var global = GetNode("/root/Global");
-            String gameMode = global.Get("game_mode").As<string>();
-            if (gameMode == "Deathmatch")
-			{
-                var spVar = global.Call("get_spawnpoint");
-
-                var spawnpoint = spVar.As<Vector3>();
-                botInstance.GlobalPosition = spawnpoint;
-            }
-			int botAmount = global.Get("bot_amount").As<int>();
-			if (botAmount != 0)
-			{
-				AddBot();
-			}
-        }
-
-		public void OnMapManagerBuildComplete()
-		{
-			mapManager.Call("unwrap_uv2");
-			navRegion.BakeNavigationMesh();
-
-			if ( !spectatorMode )
-			{
-				int id = Multiplayer.GetUniqueId();
-				if (id != 1)
-				{
-					RpcId(1, "InstancePlayer", id);
-				}
-				else
-				{
-					InstancePlayer(id);
-				}
-			}
-			else
-			{
-				SpawnCamera();
-			}
+			voxelGi.Show();
 		}
-
-		public void SpawnCamera()
+		else
 		{
-			//GetNode<Camera3D>("Camera3D").Current = false;
-			PackedScene cameraScene = GD.Load<PackedScene>("res://core/Camera.tscn");
-			Camera3D camera = cameraScene.Instantiate<Camera3D>();
-			AddChild(camera);
-			camera.Current = true;
+			voxelGi.Hide();
 		}
-
-		public void SetSpectatorMode(bool enabled)
-		{
-			spectatorMode = enabled;
-        }
-
-		public void SetVoxelGi(bool _bool)
-		{
-			VoxelGI voxelGi = GetNode<VoxelGI>("VoxelGI");
-			if (_bool == true)
-			{
-				voxelGi.Show();
-			}
-			else
-			{
-				voxelGi.Hide();
-			}
-		}
-    }
+	}
 }

@@ -1,26 +1,25 @@
 using Godot;
 using System;
 
-namespace Sunaba.Core
+namespace Sunaba.Core;
+
+public partial class NewRoom : Node
 {
-	public partial class NewRoom : Node
+	public void OnBotsToggled(bool buttonPressed)
 	{
-        public void OnBotsToggled(bool buttonPressed)
-		{
-            var global = GetNode("/root/Global");
+		var global = GetNode("/root/Global");
 
-            global.Set("bots_enabled", buttonPressed);
-            //global.bots_enabled = buttonPressed;
-        }
+		global.Set("bots_enabled", buttonPressed);
+		//global.bots_enabled = buttonPressed;
+	}
 
-        public void OnBotAmountChanged(double value)
-        {
-            var global = GetNode("/root/Global");
+	public void OnBotAmountChanged(double value)
+	{
+		var global = GetNode("/root/Global");
 
-            global.Set("bot_amount", value);
-            //global.bots_enabled = buttonPressed;
-        }
-    }
+		global.Set("bot_amount", value);
+		//global.bots_enabled = buttonPressed;
+	}
 }
 
 /*

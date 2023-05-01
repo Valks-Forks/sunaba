@@ -2,27 +2,26 @@ using Godot;
 using System;
 using System.Reflection;
 
-namespace Sunaba.Core
+namespace Sunaba.Core;
+
+public partial class BuildFlags : Resource
 {
-    public partial class BuildFlags : Resource
-    {
-        [Export]
-        public bool multiplayerEnabled = false;
+	[Export]
+	public bool multiplayerEnabled = false;
 
-        [Export]
-        public String versionNumber = "0.4.0";
+	[Export]
+	public String versionNumber = "0.4.0";
 
-        [Export]
-        public String buildDate = "March 6th 2023";
+	[Export]
+	public String buildDate = "March 6th 2023";
 
-        public String GetBuildDate()
-        {
-            var version = Assembly.GetExecutingAssembly().GetName().Version;
-            DateTime date = new DateTime(2000, 1, 1)
-                .AddDays(version.Build)
-                .AddSeconds(version.Revision * 2);
+	public String GetBuildDate()
+	{
+		var version = Assembly.GetExecutingAssembly().GetName().Version;
+		DateTime date = new DateTime(2000, 1, 1)
+			.AddDays(version.Build)
+			.AddSeconds(version.Revision * 2);
 
-            return date.ToString();
-        }
-    }
+		return date.ToString();
+	}
 }

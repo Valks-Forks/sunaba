@@ -2,17 +2,16 @@ using Godot;
 using System;
 using Sunaba.Core;
 
-namespace Sunaba.Entities
-{
-	public partial class GMSandbox : Node
-	{
-		// Called when the node enters the scene tree for the first time.
-		public override void _Ready()
-		{
-            Global global = GetNode<Global>("/root/Global");
+namespace Sunaba.Entities;
 
-			global.gameMode = "Sandbox";
-        }
+public partial class GMSandbox : Node
+{
+	// Called when the node enters the scene tree for the first time.
+	public override void _Ready()
+	{
+		Global global = GetNode<Global>("/root/Global");
+
+		global.gameMode = "Sandbox";
 	}
 }
 

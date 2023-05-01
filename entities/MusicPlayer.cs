@@ -3,40 +3,39 @@ using Godot;
 using Godot.Collections;
 using System;
 
-namespace Sunaba.Entities 
+namespace Sunaba.Entities;
+
+public partial class MusicPlayer : Node3D
 {
-	public partial class MusicPlayer : Node3D
+	[Export]
+	public Dictionary properties;
+
+	[Export]
+	public AudioStreamPlayer audioStreamPlayer;
+
+	Timer timer;
+
+	// Called when the node enters the scene tree for the first time.
+	public override void _Ready()
 	{
-		[Export]
-		public Dictionary properties;
+		timer = new Timer();
+		timer.WaitTime = 0.5;
+		timer.OneShot = true;
+		AddChild(timer);
+		timer.Timeout += PlayMusic;
+		timer.Start();
+	}
 
-		[Export]
-		public AudioStreamPlayer audioStreamPlayer;
-
-		Timer timer;
-
-		// Called when the node enters the scene tree for the first time.
-		public override void _Ready()
+	void PlayMusic()
+	{
+		timer.QueueFree();
+		if (properties.ContainsKey("music"))
 		{
-			timer = new Timer();
-			timer.WaitTime = 0.5;
-			timer.OneShot = true;
-			AddChild(timer);
-			timer.Timeout += PlayMusic;
-			timer.Start();
-		}
-
-		void PlayMusic()
-		{
-			timer.QueueFree();
-			if (properties.ContainsKey("music"))
-			{
-				String musicName = properties.GetValueOrDefault("music").ToString();
-				String musicPath = "res://music/" + musicName + ".ogg";
-				AudioStream musicStream = GD.Load<AudioStream>(musicPath);
-				audioStreamPlayer.Stream = musicStream;
-				audioStreamPlayer.Play();
-			}
+			String musicName = properties.GetValueOrDefault("music").ToString();
+			String musicPath = "res://music/" + musicName + ".ogg";
+			AudioStream musicStream = GD.Load<AudioStream>(musicPath);
+			audioStreamPlayer.Stream = musicStream;
+			audioStreamPlayer.Play();
 		}
 	}
 }

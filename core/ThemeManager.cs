@@ -1,12 +1,11 @@
 using Godot;
 using System;
 
-namespace Sunaba.Core
+namespace Sunaba.Core;
+
+public partial class ThemeManager : Node
 {
-	public partial class ThemeManager : Node
-	{
-		public Theme theme;
-	}
+	public Theme theme;
 }
 
 /*

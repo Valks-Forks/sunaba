@@ -1,11 +1,10 @@
 using Godot;
 using System;
 
-namespace Sunaba.Core
+namespace Sunaba.Core;
+
+public partial class MapHolder : Node
 {
-	public partial class MapHolder : Node
-	{
-		[Export]
-		public String map = "";
-    }
+	[Export]
+	public String map = "";
 }
